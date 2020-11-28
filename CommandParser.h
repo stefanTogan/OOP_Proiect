@@ -6,6 +6,8 @@
 #include "DisplayTable.h"
 #include "InsertInto.h"
 #include "DeleteFrom.h"
+#include "Update.h"
+#include "Select.h"
 using namespace std;
 
 class ProjectExceptionParser : exception
@@ -175,6 +177,32 @@ public:
                 delete err;
             } 
         }
+        if ((_stricmp(this->input[0], "UPDATE") == 0) && (_stricmp(this->input[2], "SET") == 0)) {
+            Update update(this->input + 1, this->nrWords);
+            ok = 1;
+            try {
+                update.startUpdate();
+            }
+            catch (ProjectExceptionUpdate* err) {
+                cout<< endl << "Invalid UPDATE command format";
+                delete err;
+            }
+        }
+        if (_stricmp(this->input[0], "SELECT") == 0) {
+
+            Select select;
+            try {
+                select.checkFormat(this->input + 1, this->nrWords - 1);
+                select.addInformation(this->input + 1, this->nrWords-1);
+                select.startSelect();
+            }
+            catch (ProjectExceptionSelect* err) {
+                cout << endl << "Invalid SELECT command format";
+                delete err;
+            }
+            
+            ok = 1;
+        }
         if (ok == 0) {
             cout << endl << "Invalid input";
         }
@@ -206,7 +234,18 @@ public:
                         throw new ProjectExceptionParser("Too few arguments");
                         return 0;
                     }
+                    if ((_stricmp(this->input[0], "UPDATE") == 0)) {
+                        throw new ProjectExceptionParser("Too few arguments");
+                        return 0;
+                    }
                 }
+                else
+                    if (this->nrWords < 5) {
+                        if ((_stricmp(this->input[0], "UPDATE") == 0)) {
+                            throw new ProjectExceptionParser("Too few arguments");
+                            return 0;
+                        }
+                    }
         return 1;
     }
 
@@ -217,5 +256,52 @@ public:
             cout << this->input[i]<< endl;
         }
         cout << this->nrWords;
+    }
+
+    //operators
+    CommandParser operator=(const CommandParser& cp) {
+        if (this != &cp) {
+            this->reader = cp.reader;
+            this->nrWords = cp.nrWords;
+            if (this->input != nullptr) {
+                for (int i = 0; i < this->nrWords; i++)
+                    delete[] this->input[i];
+                delete[] this->input;
+            }
+            this->input = new char* [this->nrWords];
+            for (int i = 0; i < this->nrWords; i++) {
+                this->input[i] = new char[strlen(cp.input[i]) + 1];
+            }
+            for (int i = 0; i < this->nrWords; i++) {
+                strcpy(this->input[i], cp.input[i]);
+            }
+        }
+        return *this;
+    }
+
+    bool operator==(const CommandParser& cp)
+    {
+        if (this->nrWords != cp.nrWords)
+            return 0;
+        else
+        {
+            if (this->reader.compare(cp.reader.c_str()) != 0)
+                return 0;
+        }
+        return 1;
+    }
+
+    char* operator[](int i)
+    {
+        if (i < nrWords)
+            return this->input[i];
+        else
+            throw ProjectExceptionParser();
+    }
+
+    CommandParser operator+(const char* newCommand)
+    {
+        CommandParser newParser(newCommand);
+        return newParser;
     }
 };

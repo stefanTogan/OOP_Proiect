@@ -11,7 +11,7 @@ using namespace std;
 int main()
 {
     try {
-        CommandParser parse1("DELETE FROM a WHERE col = 1");
+        CommandParser parse1("SELECT ALL FROM a WHERE a = d");
         parse1.startParse();
         //parse1.getInfo();
     }

@@ -22,4 +22,8 @@ public:
 	void getInfo() {
 		cout <<endl<< "Command displays contents of table " << this->name;
 	}
+
+	string getName() {
+		return this->name;
+	}
 };

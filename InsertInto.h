@@ -34,6 +34,31 @@ public:
 		}
 	}
 
+	InsertInto(const InsertInto& ii) {
+		this->tableName = ii.tableName;
+		this->nrWords = ii.nrWords;
+		if (this->input != nullptr) {
+			for (int i = 0; i < this->nrWords; i++)
+				delete[] this->input[i];
+			delete[] this->input;
+		}
+		this->input = new char* [this->nrWords];
+		for (int i = 0; i < this->nrWords; i++) {
+			this->input[i] = new char[strlen(ii.input[i]) + 1];
+		}
+		for (int i = 0; i < this->nrWords; i++) {
+			strcpy(this->input[i], ii.input[i]);
+		}
+	}
+
+	~InsertInto() {
+		if (this->input != nullptr) {
+			for (int i = 0; i < this->nrWords; i++)
+				delete[] this->input[i];
+			delete[] this->input;
+		}
+	}
+
 	void startInsert() {
 		if (this->nrWords != 0) {
 			this->getInfo();

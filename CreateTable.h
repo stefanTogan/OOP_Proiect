@@ -85,5 +85,25 @@ public:
 			cout << this->input[i] << " " << this->input[i+1] << endl;
 		}
 	}
+
+	//operators
+	CreateTable operator=(const CreateTable& ct) {
+		if (this != &ct) {
+			this->nrWords = ct.nrWords;
+			if (this->input != nullptr) {
+				for (int i = 0; i < this->nrWords; i++)
+					delete[] this->input[i];
+				delete[] this->input;
+			}
+			this->input = new char* [this->nrWords];
+			for (int i = 0; i < this->nrWords; i++) {
+				this->input[i] = new char[strlen(ct.input[i]) + 1];
+			}
+			for (int i = 0; i < this->nrWords; i++) {
+				strcpy(this->input[i], ct.input[i]);
+			}
+		}
+		return *this;
+	}
 };
 

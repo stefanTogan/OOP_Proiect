@@ -16,6 +16,7 @@ public:
 	void startDropTable(int nrWords) {
 		if (nrWords == 3) {
 			this->getInfo();
+			Tables::noTables--;
 		}
 		else {
 			throw new ProjectExceptionDropTable();

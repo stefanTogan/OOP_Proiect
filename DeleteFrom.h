@@ -5,7 +5,6 @@ class ProjectExceptionDeleteFrom : exception
 
 };
 
-//DELETE FROM table_name WHERE column_name = value
 class DeleteFrom {
 	string tableName = ""; //Table name
 	char** input = nullptr; //Matrix with all words in the input
@@ -28,6 +27,32 @@ public:
 		}
 	}
 
+	//copy constructor
+	DeleteFrom(const DeleteFrom& df) {
+		this->tableName = df.tableName;
+		this->nrWords = df.nrWords;
+		if (this->input != nullptr) {
+			for (int i = 0; i < this->nrWords; i++)
+				delete[] this->input[i];
+			delete[] this->input;
+		}
+		this->input = new char* [this->nrWords];
+		for (int i = 0; i < this->nrWords; i++) {
+			this->input[i] = new char[strlen(df.input[i]) + 1];
+		}
+		for (int i = 0; i < this->nrWords; i++) {
+			strcpy(this->input[i], df.input[i]);
+		}
+	}
+
+	//destructor
+	~DeleteFrom() {
+		if (this->input != nullptr) {
+			for (int i = 0; i < this->nrWords; i++)
+				delete[] this->input[i];
+			delete[] this->input;
+		}
+	}
 	void startDelete() {
 		if (this->nrWords == 0 || this->nrWords == 2) {
 			this->getInfo();
