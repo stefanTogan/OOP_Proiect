@@ -1,0 +1,4 @@
+SELECT panacotar_name
+FROM panacotari
+
+DROP TABLE mamaligari

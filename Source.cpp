@@ -3,20 +3,27 @@
 #include <exception>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <fstream>
 #include "CommandParser.h"
 #include "Tables.h"
+#include "InputMaker.h"
+#include "CommandExtractor.h"
+#include "TextFileOperator.h"
+#include "CommandHandler.h"
 using namespace std;
 
 
-int main()
-{
-    try {
-        CommandParser parse1("SELECT ALL FROM a WHERE a = d");
-        parse1.startParse();
-        //parse1.getInfo();
-    }
-    catch (ProjectExceptionParser* err) {
-        cout << err->getError();
-        delete err;
-    }
+
+
+
+int main(int argc, char* argv[]) {
+
+	cout << endl << "The app is " << argv[0];
+
+	CommandHandler ch(argc);
+	ch.startHandle(argv);
+	
+
 }
+

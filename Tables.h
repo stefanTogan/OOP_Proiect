@@ -109,6 +109,15 @@ public:
 		return *this;
 	}
 
+	int getNoColumns()
+	{
+		return this->nrColumns;
+	}
+
+	string getName()
+	{
+		return this->name;
+	}
 
 	int getNoTables() {
 		return Tables::noTables;
@@ -137,6 +146,26 @@ public:
 		if (index<0 || index>this->nrColumns)
 			throw ProjectExceptionTables();
 		return columns[index];
+	}
+
+	char* getColumnAtIndex(int index)
+	{
+		if (index < this->getNoColumns())
+			return this->columns[index];
+		else
+		{
+			throw new ProjectExceptionTables();
+		}
+	}
+
+	char* getDataTypeAtIndex(int index)
+	{
+		if (index < this->getNoColumns())
+			return this->dataTypes[index];
+		else
+		{
+			throw new ProjectExceptionTables();
+		}
 	}
 };
 

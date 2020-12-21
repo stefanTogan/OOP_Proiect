@@ -10,7 +10,7 @@ class ProjectExceptionCreateTable : exception
 class CreateTable {
 	char** input = nullptr; //Matrix with all words in the input
 	int nrWords = 0; //Number of words in the input, matrix
-	vector <string> dataTypes = { "text","int","float","date" }; //all acceptable data types for columns
+	vector <string> dataTypes = { "text","integer","float" }; //all acceptable data types for columns
 
 public:
 
@@ -61,7 +61,7 @@ public:
 			for (int i = 2; i < this->nrWords; i = i + 2) {
 				int ok = 0;
 				for (int j = 0; j < dataTypes.size(); j++) {
-					if (_stricmp(this->input[i], dataTypes[j].c_str())==0) {
+					if (_stricmp(this->input[i], dataTypes[j].c_str()) == 0) {
 						ok = 1;
 					}
 				}
@@ -70,7 +70,9 @@ public:
 				}
 			}
 			this->getInfo();
-			Tables table(this->input,this->nrWords);
+			Tables table(this->input, this->nrWords);
+			this->storeInfoInFile(table);
+
 		}
 		else
 		{
@@ -104,6 +106,20 @@ public:
 			}
 		}
 		return *this;
+	}
+
+	void storeInfoInFile(Tables& t)
+	{
+		ofstream outfile(t.getName(), ios::app);
+		int dim = t.getNoColumns();
+		cout << endl << "The total number of columns is " << dim;
+		outfile << dim << endl;
+		for (int i = 0; i < t.getNoColumns(); i++)
+		{
+			outfile << t.getColumnAtIndex(i) << endl;
+			outfile << t.getDataTypeAtIndex(i) << endl;
+		}
+		outfile.close();
 	}
 };
 

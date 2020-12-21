@@ -1,0 +1,1 @@
+CREATE TABLE panacotari (col1, text, col2, integer)
